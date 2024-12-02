@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Desafio.Core.Entidades
 {
-    public class Livro
+    public class Livro : EntityBase
     {
-        public int Cod { get; set; }
         public string Titulo { get; set; } = string.Empty;
         public string Editora { get; set; } = string.Empty;
         public int Edicao { get; set; }

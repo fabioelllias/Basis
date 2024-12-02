@@ -8,9 +8,9 @@ namespace Desafio.Core.Entidades
 {
     public class LivroAutor
     {
-        public int LivroCod { get; set; }
+        public int LivroId { get; set; }
         public Livro Livro { get; set; } = null!;
-        public int AutorCodAu { get; set; }
+        public int AutorId { get; set; }
         public Autor Autor { get; set; } = null!;
     }
 }

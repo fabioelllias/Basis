@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Desafio.Core.Entidades
 {
-    public class Autor
+    public class Autor : EntityBase
     {
-        public int CodAu { get; set; }
         public string Nome { get; set; } = string.Empty;
 
         public ICollection<LivroAutor> LivroAutores { get; set; } = new List<LivroAutor>();

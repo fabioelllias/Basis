@@ -24,30 +24,64 @@ namespace Desafio.Infrastructure.Contexto
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configurações para LivroAutor (relacionamento N:N entre Livro e Autor)
+            modelBuilder.Entity<Livro>()
+                .ToTable("Livro")
+                .Property(l => l.Id)
+                .HasColumnName("Cod");
+
+            modelBuilder.Entity<Autor>()
+                .ToTable("Autor")
+                .Property(a => a.Id)
+                .HasColumnName("CodAu");
+
+            modelBuilder.Entity<Assunto>()
+                .ToTable("Assunto")
+                .Property(a => a.Id)
+                .HasColumnName("CodAs");
+
             modelBuilder.Entity<LivroAutor>()
-                .HasKey(la => new { la.LivroCod, la.AutorCodAu });
+                .ToTable("Livro_Autor") 
+                .HasKey(la => new { la.LivroId, la.AutorId });
+
+            modelBuilder.Entity<LivroAutor>()
+                .Property(la => la.LivroId)
+                .HasColumnName("LivroCod"); 
+
+            modelBuilder.Entity<LivroAutor>()
+                .Property(la => la.AutorId)
+                .HasColumnName("AutorCodAu");
+
             modelBuilder.Entity<LivroAutor>()
                 .HasOne(la => la.Livro)
                 .WithMany(l => l.LivroAutores)
-                .HasForeignKey(la => la.LivroCod);
+                .HasForeignKey(la => la.LivroId);
+
             modelBuilder.Entity<LivroAutor>()
                 .HasOne(la => la.Autor)
                 .WithMany(a => a.LivroAutores)
-                .HasForeignKey(la => la.AutorCodAu);
+                .HasForeignKey(la => la.AutorId);
 
-            // Configurações para LivroAssunto (relacionamento N:N entre Livro e Assunto)
             modelBuilder.Entity<LivroAssunto>()
-                .HasKey(la => new { la.LivroCod, la.AssuntoCodAs });
+                .ToTable("Livro_Assunto") 
+                .HasKey(la => new { la.LivroId, la.AssuntoId });
+
+            modelBuilder.Entity<LivroAssunto>()
+                .Property(la => la.LivroId)
+                .HasColumnName("LivroCod"); 
+
+            modelBuilder.Entity<LivroAssunto>()
+                .Property(la => la.AssuntoId)
+                .HasColumnName("AssuntoCodAs");
+
             modelBuilder.Entity<LivroAssunto>()
                 .HasOne(la => la.Livro)
                 .WithMany(l => l.LivroAssuntos)
-                .HasForeignKey(la => la.LivroCod);
+                .HasForeignKey(la => la.LivroId);
+
             modelBuilder.Entity<LivroAssunto>()
                 .HasOne(la => la.Assunto)
                 .WithMany(a => a.LivroAssuntos)
-                .HasForeignKey(la => la.AssuntoCodAs);
+                .HasForeignKey(la => la.AssuntoId);
         }
-
     }
 }
