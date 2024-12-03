@@ -21,7 +21,23 @@ namespace Desafio.Application
                 .ReverseMap();
 
             CreateMap<Autor, AutorAtualizarResult>()
-                .ReverseMap();                
+                .ReverseMap();
+
+            CreateMap<Assunto, AssuntoResult>()
+              .ForMember(dest => dest.Id, orin => orin.MapFrom(src => src.Id))
+              .ReverseMap();
+
+            CreateMap<Assunto, AssuntoCriarComand>()
+                .ReverseMap();
+
+            CreateMap<Assunto, AssuntoCriarResult>()
+                .ReverseMap();
+
+            CreateMap<Assunto, AssuntoAtualizarComand>()
+                .ReverseMap();
+
+            CreateMap<Assunto, AssuntoAtualizarResult>()
+                .ReverseMap();
         }
     }
 }

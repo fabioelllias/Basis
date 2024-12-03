@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Desafio.Application;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Desafio.API
 {
@@ -6,48 +7,48 @@ namespace Desafio.API
     public class AssuntoController : ControllerBaseLocal
     {
         /// <summary>
-        /// Lista todos os Assuntos.
+        /// Lista todos os assuntoes.
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> Assuntos([FromRoute] object request)
+        public async Task<IActionResult> Assuntos([FromRoute] AssuntoListarTodosQuery request)
         {
-            return Ok(Mediator.Send(request));
+            return Ok(await Mediator.Send(request));
         }
 
         /// <summary>
-        /// Obtém um Assunto pelo ID.
+        /// Obtém um assunto pelo ID.
         /// </summary>
-        [HttpGet, Route("{id}")]
-        public async Task<IActionResult> ObterAssunto([FromRoute] object request)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> ObterAssunto(int id)
         {
-            return Ok(Mediator.Send(request));
+            return Ok(await Mediator.Send(AssuntoObterPorIdQuery.Create(id)));
         }
 
         /// <summary>
-        /// Cria um novo Assunto
+        /// Cria um novo assunto
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> CriarAssunto([FromBody] object request)
+        public async Task<IActionResult> CriarAssunto([FromBody] AssuntoCriarComand request)
         {
-            return Ok(Mediator.Send(request).Result);
+            return Ok(await Mediator.Send(request));
         }
 
         /// <summary>
-        /// Atualiza os dados de um Assunto existente.
+        /// Atualiza os dados de um assunto existente.
         /// </summary>
-        [HttpPut, Route("{id}")]
-        public async Task<IActionResult> AtualizarAssunto([FromRoute] int id, [FromBody] object request)
+        [HttpPut]
+        public async Task<IActionResult> AtualizarAssunto([FromBody] AssuntoAtualizarComand request)
         {
-            return Ok(Mediator.Send(request).Result);
+            return Ok(await Mediator.Send(request));
         }
 
         /// <summary>
-        /// Exclui Assunto pelo ID.
+        /// Exclui assunto pelo ID.
         /// </summary>
-        [HttpDelete, Route("{id}")]
-        public async Task<IActionResult> ExcluirAssunto([FromRoute] int id, [FromBody] object request)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> ExcluirAssunto(int id)
         {
-            return Ok(Mediator.Send(request).Result);
+            return Ok(await Mediator.Send(AssuntoExcluirComand.Create(id)));
         }
     }
 }
