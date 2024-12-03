@@ -1,10 +1,12 @@
 using Desafio.API;
+using Desafio.API.Filters;
 using Desafio.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddControllers(option => option.Filters.Add<NotificationFilter>());
+builder.Services.AddControllers(option => option.Filters.Add<AsyncExceptionFilter>());
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

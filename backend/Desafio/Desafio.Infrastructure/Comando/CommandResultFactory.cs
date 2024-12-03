@@ -6,4 +6,9 @@ public class CommandResultFactory : ICommandResultFactory
     {
         return new CommandResult(success, message, data);
     }
+
+    public CommandResult Create()
+    {
+        return new CommandResult(true, null, null);
+    }
 }

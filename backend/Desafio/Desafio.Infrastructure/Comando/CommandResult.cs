@@ -21,14 +21,14 @@
             Success = success;
         }
 
-        public virtual object? Content { get; set; }
         public virtual bool Success { get; set; }
-        public virtual string Mensagem { get; set; }
+        public virtual string Message { get; set; }
+        public virtual object? Content { get; set; }
 
-        public CommandResult(System.Collections.Generic.IReadOnlyCollection<CommandResult> notifications, object content)
+        public CommandResult(IReadOnlyCollection<CommandResult> notifications, object content)
         {
             Success = notifications?.Count == 0;
-            Mensagem = notifications != null ? string.Join(",", notifications.Select(item => item.Mensagem).ToArray()) : "";
+            Message = notifications != null ? string.Join(",", notifications.Select(item => item.Message).ToArray()) : "";
             Content = content;
         }
     }

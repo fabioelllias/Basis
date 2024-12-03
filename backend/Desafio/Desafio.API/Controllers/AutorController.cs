@@ -12,16 +12,16 @@ namespace Desafio.API
         [HttpGet]
         public async Task<IActionResult> Autores([FromRoute] AutorListarTodosQuery request)
         {
-            return Ok(Mediator.Send(request));
+            return Ok(await Mediator.Send(request));
         }
 
         /// <summary>
         /// Obtém um autor pelo ID.
         /// </summary>
-        [HttpGet, Route("{id}")]
-        public async Task<IActionResult> ObterAutor([FromRoute] object request)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> ObterAutor(int id)
         {
-            return Ok(Mediator.Send(request));
+            return Ok(await Mediator.Send(AutorObterPorIdQuery.Create(id)));
         }
 
         /// <summary>

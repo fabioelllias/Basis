@@ -7,7 +7,9 @@ namespace Desafio.Application
     {
         public AutoMapperProfile()
         {
-            CreateMap<List<Autor>, List<AutorResult>>().ReverseMap();
+            CreateMap<Autor, AutorResult>()
+                .ForMember(dest => dest.Id, orin => orin.MapFrom(src => src.Id))
+                .ReverseMap();
         }
     }
 }

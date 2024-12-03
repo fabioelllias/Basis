@@ -6,8 +6,9 @@ using AutoMapper;
 
 namespace Desafio.Application
 {
-    public class AutorQueryHandler : Notifiable<Notification>, 
-                                     IRequestHandler<AutorListarTodosQuery, CommandResult>
+    public class AutorQueryHandler : Notifiable<Notification>,
+                                     IRequestHandler<AutorListarTodosQuery, CommandResult>,
+                                     IRequestHandler<AutorObterPorIdQuery, CommandResult>
     {
         private readonly IRepositoryBase<Autor> _repository;
         private readonly INotificationContext _notification;
@@ -27,7 +28,27 @@ namespace Desafio.Application
             var entitys = _repository.GetAll().ToList();
 
             var response = _mapper.Map<List<AutorResult>>(entitys);
-            
+
+            return _factory.Create(true, null, response);
+        }
+
+        public async Task<CommandResult> Handle(AutorObterPorIdQuery request, CancellationToken cancellationToken)
+        {
+            if (!request.IsValid)
+            {
+                _notification.AddNotification(request.Notifications);
+                return _factory.Create();
+            }
+
+            var entity = _repository.GetById(request.Id);
+            if (entity == null)
+            {
+                _notification.AddNotification("Autor", "Autor não encontrado!");
+                return _factory.Create();
+            }
+
+            var response = _mapper.Map<AutorResult>(entity);
+
             return _factory.Create(true, null, response);
         }
     }
