@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Desafio.Application;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Desafio.API
 {
@@ -9,7 +10,7 @@ namespace Desafio.API
         /// Lista todos os autores.
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> Autores([FromRoute] object request)
+        public async Task<IActionResult> Autores([FromRoute] AutorListarTodosQuery request)
         {
             return Ok(Mediator.Send(request));
         }

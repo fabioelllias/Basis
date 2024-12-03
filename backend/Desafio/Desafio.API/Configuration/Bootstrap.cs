@@ -1,4 +1,6 @@
-﻿using Desafio.Infrastructure;
+﻿using AutoMapper;
+using Desafio.Application;
+using Desafio.Infrastructure;
 using Microsoft.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -10,15 +12,21 @@ namespace Desafio.API
         public static IServiceCollection AddApplication(this IServiceCollection services, Microsoft.Extensions.Configuration.ConfigurationManager config)
         {
 
-            services.AddMediatR(cfg => { cfg.RegisterServicesFromAssembly(typeof(ICommandResult).Assembly); });
+            services.AddMediatR(cfg => { cfg.RegisterServicesFromAssembly(typeof(AutorQueryHandler).Assembly); });
 
             services.AddScoped<INotificationContext, NotificationContext>();
+
+            services.AddScoped<ICommandResultFactory, CommandResultFactory>();
 
             services.AddDbContext<LivroContexto>(options => options.UseNpgsql(config.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IUnitOfWork>(provider => provider.GetService<LivroContexto>());
 
             services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
+
+            var mapperConfig = new MapperConfiguration(cfg => { cfg.AddProfile(new AutoMapperProfile()); });
+
+            services.AddSingleton(mapperConfig.CreateMapper());
 
             return services;
         }
