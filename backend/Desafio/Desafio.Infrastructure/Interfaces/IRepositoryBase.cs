@@ -1,6 +1,6 @@
 ﻿using Desafio.Core.Entidades;
 
-namespace Desafio.Infrastructure.Interface
+namespace Desafio.Infrastructure
 {
     public interface IRepositoryBase<TEntity> where TEntity : EntityBase
     {

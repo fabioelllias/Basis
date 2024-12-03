@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Desafio.Infrastructure.Domain  
+namespace Desafio.Infrastructure  
 {
     public interface IUnitOfWork
     {

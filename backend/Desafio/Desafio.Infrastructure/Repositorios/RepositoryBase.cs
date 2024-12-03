@@ -1,6 +1,5 @@
 ﻿using Desafio.Core.Entidades;
-using Desafio.Infrastructure.Domain;
-using Desafio.Infrastructure.Interface;
+using Desafio.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 

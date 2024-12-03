@@ -1,8 +1,8 @@
 ﻿using Desafio.Core.Entidades;
-using Desafio.Infrastructure.Domain;
+using Desafio.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-namespace Desafio.Infrastructure.Contexto
+namespace Desafio.Infrastructure
 {
     public class LivroContexto : DbContext, IUnitOfWork
     {

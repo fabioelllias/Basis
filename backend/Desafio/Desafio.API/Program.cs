@@ -1,5 +1,5 @@
 using Desafio.API;
-using Desafio.Infrastructure.Contexto;
+using Desafio.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

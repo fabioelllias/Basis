@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Command\" />
-    <Folder Include="Query\" />
+    <Folder Include="Comandos\" />
+    <Folder Include="Consultas\" />
   </ItemGroup>
 
 </Project>
