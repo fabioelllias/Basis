@@ -1,0 +1,33 @@
+services:
+  postgres:
+    container_name: 'postgres'
+    image: postgres:15
+    ports:
+        - 5432:5432
+    volumes: 
+        - postgre_vol:/var/lib/postgresql/data
+    environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: livrosdb
+    networks:
+        - livro-network
+
+  desafio.api:
+    image: projetodocker.api
+    build:
+      context: .
+      dockerfile: Desafio.API/Dockerfile
+    depends_on:
+     - "postgres"
+    networks:
+      - livro-network
+
+networks:
+  livro-network:
+    driver: bridge
+
+volumes: 
+  postgre_vol:
+  v01:
+    driver: local
