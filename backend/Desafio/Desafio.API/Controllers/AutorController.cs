@@ -28,27 +28,27 @@ namespace Desafio.API
         /// Cria um novo autor
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> CriarAutor([FromBody] object request)
+        public async Task<IActionResult> CriarAutor([FromBody] AutorCriarComand request)
         {
-            return Ok(Mediator.Send(request).Result);
+            return Ok(await Mediator.Send(request));
         }
 
         /// <summary>
         /// Atualiza os dados de um autor existente.
         /// </summary>
-        [HttpPut, Route("{id}")]
-        public async Task<IActionResult> AtualizarAutor([FromRoute] int id, [FromBody] object request)
+        [HttpPut]
+        public async Task<IActionResult> AtualizarAutor([FromBody] AutorAtualizarComand request)
         {
-            return Ok(Mediator.Send(request).Result);
+            return Ok(await Mediator.Send(request));
         }
 
         /// <summary>
         /// Exclui autor pelo ID.
         /// </summary>
-        [HttpDelete, Route("{id}")]
-        public async Task<IActionResult> ExcluirAutor([FromRoute] int id, [FromBody] object request)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> ExcluirAutor(int id)
         {
-            return Ok(Mediator.Send(request).Result);
+            return Ok(await Mediator.Send(AutorExcluirComand.Create(id)));
         }
     }
 }

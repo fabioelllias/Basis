@@ -5,19 +5,8 @@
         public CommandResult() { }
         public CommandResult(bool success, string? message, object? content)
         {
-            if (content == null)
-            {
-                var mensagem = new
-                {
-                    mensagem = message
-                };
-                Content = mensagem;
-            }
-            else
-            {
-                Content = content;
-            }
-            
+            Message = message;
+            Content = content;
             Success = success;
         }
 
