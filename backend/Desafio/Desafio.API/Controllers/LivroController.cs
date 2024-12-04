@@ -50,5 +50,23 @@ namespace Desafio.API
         {
             return Ok(await Mediator.Send(LivroExcluirComand.Create(id)));
         }
+
+        /// <summary>
+        /// Lista todas as formas de compra de livros
+        /// </summary>
+        [HttpGet("forma-compra")]
+        public async Task<IActionResult> FormasDeCompra([FromRoute] LivroFormaCompraQuery request)
+        {
+            return Ok(await Mediator.Send(request));
+        }
+
+        /// <summary>
+        /// Lista o preço do livro por forma de compra
+        /// </summary>
+        [HttpGet, Route("{id}/preco")]
+        public async Task<IActionResult> Precos(int id)
+        {
+            return Ok(await Mediator.Send(LivroPrecoQuery.Create(id)));
+        }
     }
 }

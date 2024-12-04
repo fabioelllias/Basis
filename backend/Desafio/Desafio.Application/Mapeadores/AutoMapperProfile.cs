@@ -40,12 +40,18 @@ namespace Desafio.Application
             CreateMap<Assunto, AssuntoAtualizarResult>()
                 .ReverseMap();
 
+            CreateMap<FormaCompra, LivroFormaCompraResult>()
+                .ReverseMap();
+
 
             CreateMap<Livro, LivroResult>()
                 .ForMember(dest => dest.Id, orin => orin.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Autores, orin => orin.MapFrom(src => string.Join(',', src.LivroAutores.Select(item => item.Autor.Nome).ToArray())))
                 .ForMember(dest => dest.Assuntos, orin => orin.MapFrom(src => string.Join(',', src.LivroAssuntos.Select(item => item.Assunto.Descricao).ToArray()))
                 );
+
+            CreateMap<Livro, LivroPrecoResult>()
+                .ConvertUsing<LivroToLivroPrecoConverter>();
 
             CreateMap<LivroCriarComand, Livro>()
                 .ConvertUsing<LivroCriarComandToLivroConverter>();
