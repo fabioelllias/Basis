@@ -36,8 +36,8 @@ namespace Desafio.API
         /// <summary>
         /// Atualiza os dados de um autor existente.
         /// </summary>
-        [HttpPut]
-        public async Task<IActionResult> AtualizarAutor([FromBody] AutorAtualizarComand request)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> AtualizarAutor(int id, [FromBody] AutorAtualizarComand request)
         {
             return Ok(await Mediator.Send(request));
         }

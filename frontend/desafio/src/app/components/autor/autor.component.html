@@ -1,1 +1,53 @@
-<p>autor works!</p>
+<div class="container mt-5">
+  <h2 class="text-center">Gestão de Autores</h2>
+
+    <div *ngIf="successMessage" class="alert alert-success" role="alert">
+    {{ successMessage }}
+  </div>
+
+  <button class="btn btn-primary mb-3" (click)="openForm()">Novo Autor</button>
+
+  <div *ngIf="isFormVisible" class="card p-4 mb-4">
+    <h5>{{ isEditMode ? 'Editar Autor' : 'Criar Novo Autor' }}</h5>
+    <form [formGroup]="autorForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="nome">Nome</label>
+        <input
+          id="nome"
+          type="text"
+          class="form-control"
+          formControlName="nome"
+          [class.is-invalid]="autorForm.get('nome')?.invalid && autorForm.get('nome')?.touched"
+        />
+        <div class="invalid-feedback" *ngIf="autorForm.get('nome')?.invalid && autorForm.get('nome')?.touched">
+          A descrição é obrigatória e deve ter no máximo 40 caracteres.
+        </div>
+      </div>
+      <button type="submit" class="btn btn-success" [disabled]="autorForm.invalid">
+        {{ isEditMode ? 'Salvar Alterações' : 'Criar Autor' }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="closeForm()">Cancelar</button>
+    </form>
+  </div>
+
+  <!-- Tabela de Autors -->
+  <table class="table table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Descrição</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let autor of autores">
+        <td>{{ autor.id }}</td>
+        <td>{{ autor.nome }}</td>
+        <td>
+          <button class="btn btn-info btn-sm" (click)="editAutor(autor)">Editar</button>
+          <button class="btn btn-danger btn-sm" (click)="deleteAutor(autor.id)">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
