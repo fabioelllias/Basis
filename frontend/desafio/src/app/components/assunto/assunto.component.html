@@ -1,0 +1,23 @@
+<div class="container mt-5">
+  <h2 class="text-center">Gestão de Assuntos</h2>
+  <button class="btn btn-primary mb-3" (click)="newAssunto()">Novo Assunto</button>
+  <table class="table table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Descrição</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let assunto of assuntos">
+        <td>{{ assunto.id }}</td>
+        <td>{{ assunto.descricao }}</td>
+        <td>
+          <button class="btn btn-info btn-sm" (click)="editAssunto(assunto)">Editar</button>
+          <button class="btn btn-danger btn-sm" (click)="deleteAssunto(assunto.id)">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
