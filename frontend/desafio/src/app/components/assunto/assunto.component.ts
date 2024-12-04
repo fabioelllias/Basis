@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssuntoService } from 'src/app/services/assunto.service';
 
@@ -8,11 +8,13 @@ import { AssuntoService } from 'src/app/services/assunto.service';
   styleUrls: ['./assunto.component.css']
 })
 export class AssuntoComponent implements OnInit {
+  @ViewChild('descricaoInput') descricaoInput!: ElementRef;
   assuntos: any[] = [];
   assuntoForm: FormGroup;
-  isFormVisible = false; // Controla a exibição do formulário
-  isEditMode = false; // Indica se é modo de edição
+  isFormVisible = false;
+  isEditMode = false;
   selectedAssuntoId: number | null = null;
+  successMessage: string | null = null; // Mensagem de sucesso
 
   constructor(private fb: FormBuilder, private assuntoService: AssuntoService) {
     this.assuntoForm = this.fb.group({
@@ -24,28 +26,28 @@ export class AssuntoComponent implements OnInit {
     this.loadAssuntos();
   }
 
-  // Carregar a lista de assuntos
   loadAssuntos(): void {
     this.assuntoService.getAll().subscribe(data => {
       this.assuntos = data.content;
     });
   }
 
-  // Mostrar o formulário para novo assunto
   openForm(): void {
     this.isFormVisible = true;
     this.isEditMode = false;
-    this.assuntoForm.reset(); // Limpa o formulário
+    this.assuntoForm.reset();
+
+    setTimeout(() => {
+      this.descricaoInput.nativeElement.focus();
+    }, 0);
   }
 
-  // Fechar o formulário
   closeForm(): void {
     this.isFormVisible = false;
     this.assuntoForm.reset();
     this.selectedAssuntoId = null;
   }
 
-  // Enviar o formulário
   onSubmit(): void {
     if (this.assuntoForm.invalid) {
       return;
@@ -53,22 +55,21 @@ export class AssuntoComponent implements OnInit {
 
     const assuntoData = this.assuntoForm.value;
 
-    if (this.isEditMode && this.selectedAssuntoId !== null) {
-      // Atualizar assunto
+    if (this.isEditMode && this.selectedAssuntoId) {
       this.assuntoService.update(this.selectedAssuntoId, assuntoData).subscribe(() => {
         this.loadAssuntos();
+        this.displaySuccessMessage('Assunto atualizado com sucesso!');
         this.closeForm();
       });
     } else {
-      // Criar novo assunto
       this.assuntoService.create(assuntoData).subscribe(() => {
         this.loadAssuntos();
+        this.displaySuccessMessage('Assunto criado com sucesso!');
         this.closeForm();
       });
     }
   }
 
-  // Editar um assunto
   editAssunto(assunto: any): void {
     this.isFormVisible = true;
     this.isEditMode = true;
@@ -76,12 +77,24 @@ export class AssuntoComponent implements OnInit {
     this.assuntoForm.patchValue({
       descricao: assunto.descricao
     });
+
+    setTimeout(() => {
+      this.descricaoInput.nativeElement.focus();
+    }, 0);
   }
 
-  // Excluir um assunto
   deleteAssunto(id: number): void {
     this.assuntoService.delete(id).subscribe(() => {
+      this.displaySuccessMessage('Assunto excluído com sucesso!');
       this.loadAssuntos();
     });
+  }
+
+  // Método para exibir a mensagem de sucesso
+  displaySuccessMessage(message: string): void {
+    this.successMessage = message;
+    setTimeout(() => {
+      this.successMessage = null; // Oculta a mensagem após 3 segundos
+    }, 3000);
   }
 }

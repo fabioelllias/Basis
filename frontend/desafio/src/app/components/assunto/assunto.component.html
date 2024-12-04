@@ -1,6 +1,11 @@
 <div class="container mt-5">
   <h2 class="text-center">Gestão de Assuntos</h2>
 
+  <!-- Mensagem de Sucesso -->
+  <div *ngIf="successMessage" class="alert alert-success" role="alert">
+    {{ successMessage }}
+  </div>
+
   <!-- Botão para Novo Assunto -->
   <button class="btn btn-primary mb-3" (click)="openForm()">Novo Assunto</button>
 
