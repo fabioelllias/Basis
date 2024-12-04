@@ -1,6 +1,7 @@
 ﻿using Desafio.Core.Entidades;
 using Desafio.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Desafio.Infrastructure
 {
@@ -12,6 +13,8 @@ namespace Desafio.Infrastructure
         public DbSet<Assunto> Assuntos { get; set; }
         public DbSet<LivroAutor> LivroAutores { get; set; }
         public DbSet<LivroAssunto> LivroAssuntos { get; set; }
+        public DbSet<LivroPreco> LivroPrecos { get; set; }
+        public DbSet<FormaCompra> FormaCompras { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -42,6 +45,41 @@ namespace Desafio.Infrastructure
                 entity.ToTable("Assunto");
                 entity.Property(a => a.Id).HasColumnName("codAs");
                 entity.Property(a => a.Descricao).HasMaxLength(20).IsRequired();
+            });
+
+            modelBuilder.Entity<FormaCompra>(entity =>
+            {
+                entity.ToTable("Forma_Compra");
+                entity.Property(a => a.Id).HasColumnName("CodFc");
+                entity.Property(l => l.Descricao).HasMaxLength(40).IsRequired();
+            });
+
+            modelBuilder.Entity<LivroPreco>(entity =>
+            {
+                entity.ToTable("Livro_Preco");
+
+                entity.Property(lp => lp.Id)
+                    .HasColumnName("CodLp");
+
+                entity.Property(lp => lp.Preco)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
+
+                entity.Property(lp => lp.LivroId)
+                  .HasColumnName("Livro_Codl");
+
+                entity.HasOne(lp => lp.Livro)
+                    .WithMany(lp => lp.LivroPrecos) 
+                    .HasForeignKey(lp => lp.LivroId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(lp => lp.FormaCompra)
+                    .WithMany() 
+                    .HasForeignKey(lp => lp.FormaCompraId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.Property(lp => lp.FormaCompraId)
+                    .HasColumnName("CodFc");
             });
 
             modelBuilder.Entity<LivroAutor>()
@@ -154,6 +192,34 @@ namespace Desafio.Infrastructure
                     new LivroAssunto { Livro = livros[0], Assunto = assuntos[1] }
                 };
                 LivroAssuntos.AddRange(livroAssuntos);
+                SaveChanges();
+            }
+
+            if (!FormaCompras.Any())
+            {
+                var formasCompra = new List<FormaCompra>
+                {
+                    new FormaCompra{ Descricao = "Balcão"},
+                    new FormaCompra{ Descricao = "Self-Service" },
+                    new FormaCompra{ Descricao = "Internet" },
+                    new FormaCompra{ Descricao = "Evento" },
+                };
+                FormaCompras.AddRange(formasCompra);
+                SaveChanges();
+            }
+
+            if (!LivroPrecos.Any())
+            {
+                var livros = Livros.ToList();
+                var formas = FormaCompras.ToList();
+                var livroPrecos = new List<LivroPreco>
+                {
+                    new LivroPreco { Preco = 15M, Livro = livros[0], FormaCompra = formas[0] },
+                    new LivroPreco { Preco = 10.5M, Livro = livros[0], FormaCompra = formas[1] },
+                    new LivroPreco { Preco = 49.99M, Livro = livros[1], FormaCompra = formas[2] },
+                    new LivroPreco { Preco = 5M, Livro = livros[2], FormaCompra = formas[3] }
+                };
+                LivroPrecos.AddRange(livroPrecos);
                 SaveChanges();
             }
         }
