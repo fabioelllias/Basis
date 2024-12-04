@@ -36,8 +36,8 @@ namespace Desafio.API
         /// <summary>
         /// Atualiza os dados de um assunto existente.
         /// </summary>
-        [HttpPut]
-        public async Task<IActionResult> AtualizarAssunto([FromBody] AssuntoAtualizarComand request)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> AtualizarAssunto(int id, [FromBody] AssuntoAtualizarComand request)
         {
             return Ok(await Mediator.Send(request));
         }

@@ -24,7 +24,7 @@ export class AssuntoService {
   }
 
   update(id: number, data: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${id}`, data);
+    return this.http.put(`${this.baseUrl}/${id}`, {...data, id});
   }
 
   delete(id: number): Observable<any> {
