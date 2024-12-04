@@ -1,6 +1,7 @@
 using Desafio.API;
 using Desafio.API.Filters;
 using Desafio.Infrastructure;
+using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddApplication(builder.Configuration);
+QuestPDF.Settings.License = LicenseType.Community;
 
 var app = builder.Build();
 

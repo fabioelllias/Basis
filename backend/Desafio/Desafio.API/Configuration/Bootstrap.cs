@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using Desafio.Application;
+using Desafio.Core;
 using Desafio.Infrastructure;
-using Microsoft.AspNetCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Desafio.API
 {
@@ -23,6 +22,7 @@ namespace Desafio.API
             services.AddScoped<IUnitOfWork>(provider => provider.GetService<LivroContexto>());
 
             services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
+            services.AddScoped<IAutorRepository, AutorRepository>();
 
             var mapperConfig = new MapperConfiguration(cfg => { cfg.AddProfile(new AutoMapperProfile()); });
 

@@ -50,5 +50,13 @@ namespace Desafio.API
         {
             return Ok(await Mediator.Send(AutorExcluirComand.Create(id)));
         }
+
+        [HttpGet("relatorio")]
+        public async Task<IActionResult> Relatorio([FromRoute] ExportAutorReportQuery request)
+        {
+            var pdfBytes = await Mediator.Send(request);
+
+            return File(pdfBytes, "application/pdf", "AutorReport.pdf");
+        }
     }
 }
