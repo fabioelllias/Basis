@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AssuntoService } from 'src/app/services/assunto.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-assunto',
@@ -84,9 +85,20 @@ export class AssuntoComponent implements OnInit {
   }
 
   deleteAssunto(id: number): void {
-    this.assuntoService.delete(id).subscribe(() => {
-      this.displaySuccessMessage('Assunto excluído com sucesso!');
-      this.loadAssuntos();
+    Swal.fire({
+      title: 'Excluir registro?',
+      text: 'Esta ação não pode ser desfeita!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim',
+      cancelButtonText: 'Não'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.assuntoService.delete(id).subscribe(() => {
+          this.loadAssuntos();
+          Swal.fire('Excluído!', 'Assunto excluído com sucesso!', 'success');
+        });
+      }
     });
   }
 
