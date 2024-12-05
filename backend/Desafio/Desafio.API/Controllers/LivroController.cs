@@ -36,8 +36,8 @@ namespace Desafio.API
         /// <summary>
         /// Atualiza os dados de um livro existente.
         /// </summary>
-        [HttpPut]
-        public async Task<IActionResult> AtualizarLivro([FromBody] LivroAtualizarComand request)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> AtualizarLivro(int id, [FromBody] LivroAtualizarComand request)
         {
             return Ok(await Mediator.Send(request));
         }

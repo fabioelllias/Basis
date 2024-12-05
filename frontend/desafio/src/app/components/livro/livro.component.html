@@ -1,1 +1,116 @@
-<p>livro works!</p>
+<div class="container mt-5">
+  <h2 class="text-center">Gestão de Livros</h2>
+
+  <!-- Mensagem de Sucesso -->
+  <div *ngIf="successMessage" class="alert alert-success" role="alert">
+    {{ successMessage }}
+  </div>
+
+  <!-- Botão para Novo Livro -->
+  <button class="btn btn-primary mb-3" (click)="openForm()">Novo Livro</button>
+
+  <!-- Formulário para Criar/Editar -->
+  <div *ngIf="isFormVisible" class="card p-4 mb-4">
+    <h5>{{ isEditMode ? 'Editar Livro' : 'Criar Novo Livro' }}</h5>
+    <form [formGroup]="livroForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="titulo">Título</label>
+        <input
+          id="titulo"
+          type="text"
+          class="form-control"
+          formControlName="titulo"
+        />
+      </div>
+      <div class="form-group">
+        <label for="editora">Editora</label>
+        <input
+          id="editora"
+          type="text"
+          class="form-control"
+          formControlName="editora"
+        />
+      </div>
+      <div class="form-group">
+        <label for="edicao">Edição</label>
+        <input
+          id="edicao"
+          type="number"
+          class="form-control"
+          formControlName="edicao"
+        />
+      </div>
+      <div class="form-group">
+        <label for="anoPublicacao">Ano de Publicação</label>
+        <input
+          id="anoPublicacao"
+          type="text"
+          class="form-control"
+          formControlName="anoPublicacao"
+        />
+      </div>
+      <div class="form-group">
+        <label>Autores</label>
+        <div *ngFor="let autor of autoresFormArray.controls; let i = index" class="input-group mb-2">
+          <select class="form-control" [formControl]="getAutorFormControl(i)">
+            <option *ngFor="let item of autores" [value]="item.id">{{ item.nome }}</option>
+          </select>
+          <button type="button" class="btn btn-danger" (click)="removeAutor(i)">Remover</button>
+        </div>
+        <button type="button" class="btn btn-secondary" (click)="addAutor()">Adicionar Autor</button>
+      </div>
+      <!-- Assuntos -->
+      <div class="form-group">
+        <label>Assuntos</label>
+        <div *ngFor="let assunto of assuntosFormArray.controls; let i = index" class="input-group mb-2">
+          <select class="form-control" [formControl]="getAssuntoFormControl(i)">
+            <option *ngFor="let item of assuntos" [value]="item.id">{{ item.descricao }}</option>
+          </select>
+          <button type="button" class="btn btn-danger" (click)="removeAssunto(i)">Remover</button>
+        </div>
+        <button type="button" class="btn btn-secondary" (click)="addAssunto()">Adicionar Assunto</button>
+      </div>
+
+      <button type="submit" class="btn btn-success">
+        {{ isEditMode ? 'Salvar Alterações' : 'Criar Livro' }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="closeForm()">
+        Cancelar
+      </button>
+    </form>
+  </div>
+
+  <!-- Tabela de Livros -->
+  <table class="table table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Título</th>
+        <th>Editora</th>
+        <th>Edição</th>
+        <th>Ano de Publicação</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let livro of livros">
+        <td>{{ livro.id }}</td>
+        <td>{{ livro.titulo }}</td>
+        <td>{{ livro.editora }}</td>
+        <td>{{ livro.edicao }}</td>
+        <td>{{ livro.anoPublicacao }}</td>
+        <td>
+          <button class="btn btn-info btn-sm" (click)="editLivro(livro)">
+            Editar
+          </button>
+          <button
+            class="btn btn-danger btn-sm"
+            (click)="deleteLivro(livro.id)"
+          >
+            Excluir
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

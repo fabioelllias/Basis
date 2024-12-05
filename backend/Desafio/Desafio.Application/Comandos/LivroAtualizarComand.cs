@@ -29,8 +29,8 @@ namespace Desafio.Application
                         .IsTrue(Editora.Length >= 2, "Editora", "Tamanho mínimo 2 caracteres!")
                         .IsTrue(int.TryParse(AnoPublicacao, out int anoValido) && AnoPublicacao.Length == 4 && anoValido > 1 && anoValido <= DateTime.Now.Year,
                             "AnoPublicacao", "Ano de publicação inválido!")
-                        .IsTrue(autores.Length > 0, "Autores", "Autor(es) não informado(s)!")
-                        .IsTrue(assuntos.Length > 0, "Assuntos", "Assunto(s) não informado(s)!");
+                        .IsTrue(Autores != null && Autores.Length > 0, "Autores", "Autor(es) não informado(s)!")
+                        .IsTrue(Assuntos != null && Assuntos.Length > 0, "Assuntos", "Assunto(s) não informado(s)!");
 
             }));
         }
