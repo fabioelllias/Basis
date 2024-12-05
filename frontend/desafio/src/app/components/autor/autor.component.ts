@@ -102,6 +102,23 @@ export class AutorComponent implements OnInit {
     });
   }
 
+  downloadRelatorio(): void {
+    this.autorService.downloadPdf().subscribe((response: Blob) => {
+      // Cria uma URL para o Blob
+      const blob = new Blob([response], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+
+      // Cria um link temporário para download
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'relatorio.pdf';
+      a.click();
+
+      // Remove a URL criada
+      window.URL.revokeObjectURL(url);
+    });
+  }
+
   displaySuccessMessage(message: string): void {
     this.successMessage = message;
     setTimeout(() => {

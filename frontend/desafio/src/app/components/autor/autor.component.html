@@ -6,7 +6,7 @@
   </div>
 
   <button class="btn btn-primary mb-3" (click)="openForm()">Novo Autor</button>
-
+  <button class="btn btn-secondary mb-3" (click)="downloadRelatorio()">Baixar Relatório</button>
   <div *ngIf="isFormVisible" class="card p-4 mb-4">
     <h5>{{ isEditMode ? 'Editar Autor' : 'Criar Novo Autor' }}</h5>
     <form [formGroup]="autorForm" (ngSubmit)="onSubmit()">

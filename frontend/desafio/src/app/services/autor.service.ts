@@ -30,4 +30,10 @@ export class AutorService {
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
+
+  downloadPdf(): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/relatorio`, {
+      responseType: 'blob',
+    });
+  }
 }
