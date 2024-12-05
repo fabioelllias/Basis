@@ -16,7 +16,19 @@ namespace Desafio.Application
         public string Editora { get; set; }
         public int Edicao { get; set; }
         public string AnoPublicacao { get; set; }
-        public string Autores { get; set; }
-        public string Assuntos { get; set; }
+        public List<AutoresResult> Autores { get; set; }
+        public List<AssuntosResult> Assuntos { get; set; }
+    }
+
+    public class AutoresResult
+    {
+        public int Id { get; set; }
+        public string Autor { get; set; }
+    }
+
+    public class AssuntosResult
+    {
+        public int Id { get; set; }
+        public string Descricao { get; set; }
     }
 }

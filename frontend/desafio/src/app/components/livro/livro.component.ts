@@ -1,5 +1,7 @@
+import { AutorService } from './../../services/autor.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { AssuntoService } from 'src/app/services/assunto.service';
 import { LivroService } from 'src/app/services/livro.service';
 
 @Component({
@@ -17,7 +19,7 @@ export class LivroComponent implements OnInit {
   selectedLivroId: number | null = null;
   successMessage: string | null = null;
 
-  constructor(private fb: FormBuilder, private livroService: LivroService) {
+  constructor(private fb: FormBuilder, private livroService: LivroService, private autorService: AutorService, private assuntoService: AssuntoService) {
     this.livroForm = this.fb.group({
       titulo: ['', [Validators.required, Validators.maxLength(40)]],
       editora: ['', [Validators.required, Validators.maxLength(40)]],
@@ -41,19 +43,20 @@ export class LivroComponent implements OnInit {
   }
 
   loadAutores(): void {
-    //aqui
-    this.autores = [
-      { id: 1, nome: 'Autor 1' },
-      { id: 2, nome: 'Autor 2' },
-    ];
+    this.autorService.getAll().subscribe(data => {
+      this.autores = data.content;
+    });
   }
 
   loadAssuntos(): void {
-    // Simulação de chamada à API para carregar assuntos
-    this.assuntos = [
-      { id: 1, descricao: 'Assunto 1' },
-      { id: 2, descricao: 'Assunto 2' },
-    ];
+    this.assuntoService.getAll().subscribe(data => {
+      this.assuntos = data.content;
+    });
+
+    // this.assuntos = [
+    //   { id: 1, descricao: 'Assunto 1' },
+    //   { id: 2, descricao: 'Assunto 2' },
+    // ];
   }
 
   openForm(): void {
@@ -105,11 +108,11 @@ export class LivroComponent implements OnInit {
 
     this.clearFormArrays();
 
-    livro.livroAutores.forEach((autor: any) => {
+    livro.autores.forEach((autor: any) => {
       this.addAutor(autor.id);
     });
 
-    livro.livroAssuntos.forEach((assunto: any) => {
+    livro.assuntos.forEach((assunto: any) => {
       this.addAssunto(assunto.id);
     });
   }

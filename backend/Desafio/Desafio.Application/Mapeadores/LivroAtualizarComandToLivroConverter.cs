@@ -15,11 +15,11 @@ namespace Desafio.Application
             destination.AnoPublicacao = source.AnoPublicacao;
 
             destination.LivroAutores = source.Autores
-                .Select(autorId => new LivroAutor { AutorId = autorId })
+                .Select(autorId => new LivroAutor { AutorId = autorId, LivroId = source.Id })
                 .ToList();
 
             destination.LivroAssuntos = source.Assuntos
-                .Select(assuntoId => new LivroAssunto { AssuntoId = assuntoId })
+                .Select(assuntoId => new LivroAssunto { AssuntoId = assuntoId, LivroId = source.Id })
                 .ToList();
 
             return destination;

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Desafio.Application;
+using Desafio.Core;
 using Desafio.Core.Entidades;
 using Desafio.Infrastructure;
 using FluentAssertions;
@@ -13,6 +14,7 @@ public class LivroCommandHandlerTests
 {
     private Mock<INotificationContext> _notificationMock;
     private Mock<IRepositoryBase<Livro>> _repositoryMock;
+    private Mock<ILivroRepository> _repositoryLivroMock;
     private Mock<IMapper> _mapperMock;
     private Mock<ICommandResultFactory> _factoryMock;
     private LivroCommandHandler _handler;
@@ -24,12 +26,14 @@ public class LivroCommandHandlerTests
         _repositoryMock = new Mock<IRepositoryBase<Livro>>();
         _mapperMock = new Mock<IMapper>();
         _factoryMock = new Mock<ICommandResultFactory>();
+        _repositoryLivroMock = new Mock<ILivroRepository>();
 
         _handler = new LivroCommandHandler(
             _notificationMock.Object,
             _repositoryMock.Object,
             _mapperMock.Object,
-            _factoryMock.Object
+            _factoryMock.Object,
+            _repositoryLivroMock.Object
         );
     }
 

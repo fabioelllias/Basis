@@ -87,6 +87,9 @@ namespace Desafio.Infrastructure
                 .HasKey(la => new { la.LivroId, la.AutorId });
 
             modelBuilder.Entity<LivroAutor>()
+                .Ignore(la => la.Id);
+
+            modelBuilder.Entity<LivroAutor>()
                 .Property(la => la.LivroId)
                 .HasColumnName("Livro_Codl");
 

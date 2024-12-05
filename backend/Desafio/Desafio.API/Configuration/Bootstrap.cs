@@ -23,6 +23,7 @@ namespace Desafio.API
 
             services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
             services.AddScoped<IAutorRepository, AutorRepository>();
+            services.AddScoped<ILivroRepository, LivroRepository>();
 
             var mapperConfig = new MapperConfiguration(cfg => { cfg.AddProfile(new AutoMapperProfile()); });
 

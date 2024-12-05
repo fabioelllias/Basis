@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Desafio.Core;
 using Desafio.Core.Entidades;
 using Desafio.Infrastructure;
 using Flunt.Notifications;
@@ -15,15 +16,22 @@ namespace Desafio.Application
     {
         private readonly INotificationContext _notification;
         private readonly IRepositoryBase<Livro> _repository;
+        private readonly ILivroRepository _repositoryLivro;
         private readonly IMapper _mapper;
         private readonly ICommandResultFactory _factory;
 
-        public LivroCommandHandler(INotificationContext notificationContext, IRepositoryBase<Livro> repository, IMapper mapper, ICommandResultFactory factory)
+        public LivroCommandHandler(
+            INotificationContext notificationContext, 
+            IRepositoryBase<Livro> repository, 
+            IMapper mapper, 
+            ICommandResultFactory factory,
+            ILivroRepository livroRepository)
         {
             this._notification = notificationContext;
             this._repository = repository;
             this._mapper = mapper;
             this._factory = factory;
+            this._repositoryLivro = livroRepository;
         }
 
         public async Task<CommandResult> Handle(LivroCriarComand request, CancellationToken cancellationToken)
@@ -53,7 +61,7 @@ namespace Desafio.Application
                 return _factory.Create();
             }
 
-            bool registroExiste = _repository.GetAll().Any(ent => ent.Id == request.Id);
+            bool registroExiste = _repository.GetAll("LivroAutores.Autor", "LivroAssuntos.Assunto").Any(ent => ent.Id == request.Id);
             if (!registroExiste)
             {
                 _notification.AddNotification("Livro", "Livro não encontrado!");
@@ -62,7 +70,7 @@ namespace Desafio.Application
 
             var entity = _mapper.Map<Livro>(request);
 
-            _repository.Save(entity);
+            _repositoryLivro.Atualizar(entity);
 
             var updatedEntity = _repository.GetById(entity.Id, "LivroAutores.Autor", "LivroAssuntos.Assunto");
 
