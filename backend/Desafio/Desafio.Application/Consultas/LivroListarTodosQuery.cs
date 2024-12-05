@@ -18,6 +18,7 @@ namespace Desafio.Application
         public string AnoPublicacao { get; set; }
         public List<AutoresResult> Autores { get; set; }
         public List<AssuntosResult> Assuntos { get; set; }
+        public List<FormasCompraResult> FormasCompra { get; set; } = new List<FormasCompraResult>();
     }
 
     public class AutoresResult
@@ -30,5 +31,13 @@ namespace Desafio.Application
     {
         public int Id { get; set; }
         public string Descricao { get; set; }
+    }
+
+    public class FormasCompraResult
+    {
+        public int Id { get; set; }
+        public string Descricao { get; set; }
+
+        public string Preco { get; set; }
     }
 }

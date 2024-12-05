@@ -71,6 +71,42 @@
         <button type="button" class="btn btn-secondary" (click)="addAssunto()">Adicionar Assunto</button>
       </div>
 
+      <div class="form-group">
+        <label>Formas de Compra</label>
+        <div *ngFor="let formaCompra of formasCompraFormArray.controls; let i = index" class="input-group mb-2">
+          <!-- Seleção da Forma de Compra -->
+          <select
+          class="form-control"
+          [formControl]="getFormControl(formaCompra, 'formaCompraId')"
+          (change)="updateFormaCompraDescricao(i)"
+        >
+          <option *ngFor="let item of formasCompra" [value]="item.id">{{ item.descricao }}</option>
+        </select>
+
+        <input
+          type="text"
+          class="form-control"
+          [formControl]="getFormControl(formaCompra, 'descricao')"
+          placeholder="Descrição"
+          readonly
+        />
+
+        <input
+          type="number"
+          class="form-control"
+          [formControl]="getFormControl(formaCompra, 'preco')"
+          placeholder="Preço"
+        />
+
+
+          <!-- Botão para Remover -->
+          <button type="button" class="btn btn-danger" (click)="removeFormaCompra(i)">Remover</button>
+        </div>
+        <button type="button" class="btn btn-secondary mt-2" (click)="addFormaCompra()">Adicionar Forma de Compra</button>
+      </div>
+
+
+
       <button type="submit" class="btn btn-success">
         {{ isEditMode ? 'Salvar Alterações' : 'Criar Livro' }}
       </button>

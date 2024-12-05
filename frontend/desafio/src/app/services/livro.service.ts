@@ -30,4 +30,9 @@ export class LivroService {
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
+
+  getFormasCompra(): Observable<any> {
+    return this.http.get<any[]>(`${this.baseUrl}/forma-compra`);
+  }
+
 }

@@ -1,5 +1,5 @@
 import { AutorService } from './../../services/autor.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, DebugElement, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { AssuntoService } from 'src/app/services/assunto.service';
 import { LivroService } from 'src/app/services/livro.service';
@@ -13,6 +13,7 @@ export class LivroComponent implements OnInit {
   livros: any[] = [];
   autores: any[] = [];
   assuntos: any[] = [];
+  formasCompra: any[] = [];
   livroForm: FormGroup;
   isFormVisible = false;
   isEditMode = false;
@@ -26,7 +27,8 @@ export class LivroComponent implements OnInit {
       edicao: ['', [Validators.required ]],
       anoPublicacao: ['', [Validators.required, Validators.maxLength(4)]],
       autores: this.fb.array([]),
-      assuntos: this.fb.array([])
+      assuntos: this.fb.array([]),
+      formasCompra: this.fb.array([]),
     });
   }
 
@@ -34,6 +36,7 @@ export class LivroComponent implements OnInit {
     this.loadLivros();
     this.loadAutores();
     this.loadAssuntos();
+    this.loadFormasCompra();
   }
 
   loadLivros(): void {
@@ -52,11 +55,12 @@ export class LivroComponent implements OnInit {
     this.assuntoService.getAll().subscribe(data => {
       this.assuntos = data.content;
     });
+  }
 
-    // this.assuntos = [
-    //   { id: 1, descricao: 'Assunto 1' },
-    //   { id: 2, descricao: 'Assunto 2' },
-    // ];
+  loadFormasCompra(): void {
+    this.livroService.getFormasCompra().subscribe((data) => {
+      this.formasCompra = data.content;
+    });
   }
 
   openForm(): void {
@@ -115,6 +119,11 @@ export class LivroComponent implements OnInit {
     livro.assuntos.forEach((assunto: any) => {
       this.addAssunto(assunto.id);
     });
+debugger
+    livro.formasCompra.forEach((forma: any) => {
+      this.addFormaCompra(forma.id, forma.preco);
+    });
+
   }
 
   deleteLivro(id: number): void {
@@ -161,6 +170,7 @@ export class LivroComponent implements OnInit {
   clearFormArrays(): void {
     this.autoresFormArray.clear();
     this.assuntosFormArray.clear();
+    this.formasCompraFormArray.clear();
   }
 
   getAutorFormControl(index: number): FormControl {
@@ -169,5 +179,36 @@ export class LivroComponent implements OnInit {
 
   getAssuntoFormControl(index: number): FormControl {
     return this.assuntosFormArray.at(index) as FormControl;
+  }
+
+  get formasCompraFormArray(): FormArray {
+    return this.livroForm.get('formasCompra') as FormArray;
+  }
+
+  addFormaCompra(formaCompraId?: number, preco?: number, descricao?: string): void {
+    this.formasCompraFormArray.push(
+      this.fb.group({
+        formaCompraId: [formaCompraId || null, Validators.required],
+        descricao: [{ value: descricao || '', disabled: true }],
+        preco: [preco || 0, [Validators.required, Validators.min(0)]],
+      })
+    );
+  }
+
+  updateFormaCompraDescricao(index: number): void {
+    const formaCompraId = this.formasCompraFormArray.at(index).get('formaCompraId')?.value;
+    const formaCompraSelecionada = this.formasCompra.find((item) => item.id === formaCompraId);
+
+    if (formaCompraSelecionada) {
+      this.formasCompraFormArray.at(index).get('descricao')?.setValue(formaCompraSelecionada.descricao);
+    }
+  }
+
+  removeFormaCompra(index: number): void {
+    this.formasCompraFormArray.removeAt(index);
+  }
+
+  getFormControl(formGroup: any, controlName: string): FormControl {
+    return formGroup.get(controlName) as FormControl;
   }
 }

@@ -30,7 +30,7 @@ namespace Desafio.Application
 
         public async Task<CommandResult> Handle(LivroListarTodosQuery request, CancellationToken cancellationToken)
         {
-            var entitys = _repository.GetAll("LivroAutores.Autor", "LivroAssuntos.Assunto").ToList();
+            var entitys = _repository.GetAll("LivroAutores.Autor", "LivroAssuntos.Assunto", "LivroPrecos.FormaCompra").ToList();
 
             var response = _mapper.Map<List<LivroResult>>(entitys);
 
@@ -45,7 +45,7 @@ namespace Desafio.Application
                 return _factory.Create();
             }
 
-            var entity = _repository.GetById(request.Id, "LivroAutores.Autor", "LivroAssuntos.Assunto");
+            var entity = _repository.GetById(request.Id, "LivroAutores.Autor", "LivroAssuntos.Assunto", "LivroPrecos.FormaCompra");
             if (entity == null)
             {
                 _notification.AddNotification("Livro", "Livro não encontrado!");
